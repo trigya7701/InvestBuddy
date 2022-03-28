@@ -1,0 +1,38 @@
+.carouselExampleCaptions{
+    height: 500px;
+}
+
+
+  .carousel-img{
+      height: 400px;
+  }
+  .carousel-caption {
+  
+    position: relative;
+    text-align: center;
+  }
+  
+  .bottom-left {
+    width: 25%;
+    position: absolute;
+    left: 10%;
+    top: 35%;
+  }
+  
+  .centered {
+    width: 40%;
+    position: absolute;
+    top: 47%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .centered-new {
+    width: 25%;
+  
+    position: absolute;
+    top: 60%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+  }
+   

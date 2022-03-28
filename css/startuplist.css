@@ -1,0 +1,12 @@
+.startup{
+  
+    /* background-color: #F5F7FF; */
+    background-image: linear-gradient(to bottom ,#F5F7FF,#EBEFFF);
+}
+.startup h2{
+   text-align: center;
+   padding: 1% 0;
+}
+.startup-content{
+    margin: 2% 0;
+}
