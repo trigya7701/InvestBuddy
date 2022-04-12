@@ -2,16 +2,7 @@
 
 session_start();
 
-if (!isset($_SESSION["user_id"]) || !isset($_SESSION['user_email']) || !isset($_SESSION['user_role'])) {
 
-    header("Location:../pages/signin.php");
-}
-else{
-    if($_SESSION['user_role']!=="Startup"){
-        header("Location:profile_investor.php");
-    }
-
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -29,21 +20,17 @@ else{
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="../css/navbar.css">
-    <link rel="stylesheet" href="../css/profileStartup.css">
-    <title>InvestBuddy | Profile Startup</title>
+    <link rel="stylesheet" href="../css/profileInvestor.css">
+    <title>InvestBuddy | Profile Investor</title>
 </head>
 
 <body>
+   <!-- Navbar  -->
+
+   <?php include('../components/navbar.php'); ?>
 
 
-
-    <!-- Navbar  -->
-
-    <?php include('../components/navbar.php'); ?>
-
-
-    <!-- Profile Startup -->
-    <?php include('../components/profileStartup.php'); ?>
+   <?php include('../components/viewProfileInvestor.php'); ?>
 
 
 </body>
