@@ -2,6 +2,7 @@
 include_once('../pages/db_connect.php');
 mysqli_begin_transaction($conn);
 mysqli_autocommit($conn, FALSE);
+$user_id=$_SESSION['user_id'];
 $email_id=$_GET['query'];
 try {
     $transaction = true;
@@ -308,12 +309,43 @@ try {
 
                                 <div class="accordion-body">
                                    
-                                    <strong>This is the second item's accordion body.</strong> It is hidden by default,
-                                    until the collapse plugin adds the appropriate classes that we use to style each
-                                    element. These classes control the overall appearance, as well as the showing and
-                                    hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-                                    our default variables. It's also worth noting that just about any HTML can go within
-                                    the <code>.accordion-body</code>, though the transition does limit overflow.
+                                <div class="row row-cols-1 row-cols-md-2 g-4">
+                                    <?php
+
+                                        mysqli_begin_transaction($conn);
+                                        mysqli_autocommit($conn, FALSE);
+
+
+                                        try {
+                                            
+                                            $sqlSelectImage="SELECT * FROM `startup_images` WHERE user_id='$user_id'";
+                                            $resultSelectImage=mysqli_query($conn,$sqlSelectImage)?:throw new Exception(mysqli_error($conn));
+
+                                            $numSelectImage=mysqli_num_rows($resultSelectImage);
+
+                                            if($numSelectImage!=0){
+
+                                                while($rowSelectImage=mysqli_fetch_assoc($resultSelectImage)){
+                                                    
+                                                    echo '<div class="col">
+                                                    <div class="card">
+                                                      <img src="../uploads/'.$rowSelectImage['image_url'].'" class="card-img-top" alt="...">
+                                                     
+                                                    </div>
+                                                  </div>';
+                                                }
+                                            }
+
+
+
+                                        } catch (\Throwable $th) {
+                                            //throw $th;
+                                            echo $th;
+                                        }
+
+
+                                    ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>

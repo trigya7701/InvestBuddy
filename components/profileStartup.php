@@ -277,6 +277,110 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal5'])) {
     }
 }
 
+if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal6']) && isset($_FILES['product_image']))) {
+
+    $img_name = $_FILES['product_image']['name'];
+    $img_size = $_FILES['product_image']['size'];
+    $tmp_name = $_FILES['product_image']['tmp_name'];
+    $error = $_FILES['product_image']['error'];
+
+
+    try {
+
+        if ($error === 0) {
+            if ($img_size > 125000) {
+                throw new Exception("Sorry, your file is too large.");
+            } else {
+                $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
+                $img_ex_lc = strtolower($img_ex);
+
+                $allowed_exs = array("jpg", "jpeg", "png");
+
+                if (in_array($img_ex_lc, $allowed_exs)) {
+                    $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
+                    $img_upload_path = '../uploads/' . $new_img_name;
+                    move_uploaded_file($tmp_name, $img_upload_path);
+
+
+                    //database logic
+                    mysqli_begin_transaction($conn);
+                    mysqli_autocommit($conn, FALSE);
+
+                    $sqlInsertImage = "INSERT INTO `startup_images`(`user_id`, `startup_email`, `image_url`) 
+                                    VALUES ('$user_id','$email_id','$new_img_name')";
+                    $resultInsertImage = mysqli_query($conn, $sqlInsertImage) ?: throw new Exception(mysqli_error($conn));
+                    mysqli_commit($conn);
+
+                    echo '<div class="toast show align-items-center text-white bg-info border-0 mt-2 mx-2" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                            <div class="toast-body">
+                      Image Uploaded !!
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>';
+                } else {
+                    throw new Exception("You can't upload files of this type");
+                }
+            }
+        } else {
+            throw new Exception("Errpr");
+        }
+    } catch (\Throwable $th) {
+
+        //throw $th;
+        mysqli_rollback($conn);
+        echo $th;
+        echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+           Something went wrong !! Please try again.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>';
+    }
+}
+
+if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-img']))) {
+
+    $image_url = $_POST['product_image'];
+    //echo $image_url;
+    mysqli_begin_transaction($conn);
+    mysqli_autocommit($conn, FALSE);
+
+    try {
+
+        $sqlDeleteImage = "DELETE FROM `startup_images` WHERE image_url='$image_url'";
+        $resultDeleteImage = mysqli_query($conn, $sqlDeleteImage) ?: throw new Exception(mysqli_error($conn));
+
+
+        $file_path =  "../uploads/" . $image_url;
+        unlink($file_path) ?: throw new Exception("Error");
+        mysqli_commit($conn);
+
+        echo '<div class="toast show align-items-center text-white bg-info border-0 mt-2 mx-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+        <div class="toast-body">
+        Image Deleted !!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>';
+    } catch (\Throwable $th) {
+        //throw $th;
+        mysqli_rollback($conn);
+        //echo $th;
+        echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+           Something went wrong !! Please try again.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>';
+    }
+}
 
 
 ?>
@@ -862,14 +966,85 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal5'])) {
 
                                 <div class="accordion-body">
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <button class="btn btn-light btn-sm"><i class="fa-solid fa-pencil"></i></button>
+                                        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal6" data-bs-whatever="@fat"><i
+                                                class="fa-solid fa-pencil"></i></button>
+
+                                        <div class="modal fade" id="exampleModal6" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel6" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="" method="POST" enctype="multipart/form-data">
+
+
+                                                            <div class="mb-3">
+                                                                <label for="formFileSm" class="form-label">Small file
+                                                                    input example</label>
+                                                                <input class="form-control form-control-sm"
+                                                                    id="formFileSm" type="file" name="product_image">
+                                                            </div>
+
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary"
+                                                                    name="btn-modal6">Update</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <strong>This is the second item's accordion body.</strong> It is hidden by default,
-                                    until the collapse plugin adds the appropriate classes that we use to style each
-                                    element. These classes control the overall appearance, as well as the showing and
-                                    hiding via CSS transitions. You can modify any of this with custom CSS or overriding
-                                    our default variables. It's also worth noting that just about any HTML can go within
-                                    the <code>.accordion-body</code>, though the transition does limit overflow.
+
+                                    <?php
+
+                                    mysqli_begin_transaction($conn);
+                                    mysqli_autocommit($conn, FALSE);
+
+
+                                    try {
+
+                                        $sqlSelectImage = "SELECT * FROM `startup_images` WHERE user_id='$user_id'";
+                                        $resultSelectImage = mysqli_query($conn, $sqlSelectImage) ?: throw new Exception(mysqli_error($conn));
+
+                                        $numSelectImage = mysqli_num_rows($resultSelectImage);
+
+                                        if ($numSelectImage != 0) {
+                                            echo '<div class="row row-cols-1 row-cols-md-2 g-4">';
+                                            while ($rowSelectImage = mysqli_fetch_assoc($resultSelectImage)) {
+
+                                                echo '<div class="col">
+                                                    <div class="card">
+                                                      <img src="../uploads/' . $rowSelectImage['image_url'] . '" class="img-fluid  card-img-top  img-thumbnail" alt="...">
+                                                        <form action="" method="POST">
+                                                        <input class="form-control form-control-sm" type="hidden" value="' . $rowSelectImage['image_url'] . '" name="product_image" placeholder=".form-control-sm" aria-label=".form-control-sm example">
+                                                        <button type="submit" class="btn btn-outline-info btn-sm m-2" name="btn-delete-img">Delete<i class="fa-solid fa-trash-can mx-1"></i></button>
+                                                        </form>
+
+            
+                                                     
+                                                    </div>
+                                                  </div>';
+                                            }
+                                            echo '</div>';
+                                        }
+                                    } catch (\Throwable $th) {
+                                        //throw $th;
+                                        echo $th;
+                                    }
+
+
+                                    ?>
+
                                 </div>
                             </div>
                         </div>
