@@ -68,6 +68,8 @@
 
 
             //Database logic
+            $password=hash('sha256',$_POST["password"]);
+            //echo $password;
 
             mysqli_begin_transaction($conn);
             mysqli_autocommit($conn, FALSE);
@@ -142,8 +144,8 @@
             <div class="row gx-lg-5 align-items-center mb-5">
                 <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                        The best offer <br />
-                        <span style="color: hsl(218, 81%, 75%)">for your business</span>
+                       InvestBuddy <br />
+                        <span style="color: hsl(218, 81%, 75%)">Connecting Startups & Investors</span>
                     </h1>
                     <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
                         Lorem ipsum dolor, sit amet consectetur adipisicing elit.

@@ -182,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal3'])) {
         //throw $th;
 
         mysqli_rollback($conn);
-        echo $th;
+        //echo $th;
         echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
                       <div class="toast-body">
@@ -333,7 +333,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal6']) && isse
 
         //throw $th;
         mysqli_rollback($conn);
-        echo $th;
+      //  echo $th;
         echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
@@ -550,7 +550,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal8']) && isse
 
         //throw $th;
         mysqli_rollback($conn);
-        echo $th;
+       // echo $th;
         echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
@@ -577,6 +577,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
 
 
         $file_path =  "../profile-images/" . $profile_image_url;
+       
         unlink($file_path) ?: throw new Exception("Error");
         mysqli_commit($conn);
 
@@ -626,7 +627,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Information</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -769,7 +770,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel8">New message</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel8">Update Information</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <form action="" method="POST" enctype="multipart/form-data">
@@ -890,7 +891,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Information</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -1008,7 +1009,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Information</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -1054,7 +1055,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Information</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -1099,7 +1100,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Information</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -1145,7 +1146,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Information</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -1234,7 +1235,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                                                        <h5 class="modal-title" id="exampleModalLabel">Update Information</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
