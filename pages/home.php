@@ -15,6 +15,8 @@
     <link rel="stylesheet" href="../css/services.css">
 
     <link rel="stylesheet" href="../css/review.css">
+    
+    <link rel="stylesheet" href="../css/footer.css"> 
 
     <title>InvestBuddy | Home</title>
     <style>
@@ -73,6 +75,8 @@
 
 
     <!-- Footer -->
+    <?php include('../components/footer.php'); ?>
+
 
 
 </body>

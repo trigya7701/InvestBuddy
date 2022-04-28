@@ -1,3 +1,30 @@
+
+<?php
+
+include_once('../pages/db_connect.php');
+
+mysqli_begin_transaction($conn);
+mysqli_autocommit($conn, FALSE);
+
+try {
+   
+    $sqlSelectFeedback="SELECT * FROM `feedback` ORDER BY `f_time` DESC LIMIT 3";
+    $resultSelectFeedback=mysqli_query($conn,$sqlSelectFeedback)?:throw new Exception(mysqli_error($conn));
+
+   // $rowSelectStartups = mysqli_fetch_assoc($resultSelectStartups) ?: throw new Exception('Query Failed');
+
+    mysqli_commit($conn);
+
+} catch (\Throwable $th) {
+    //throw $th;
+    mysqli_rollback($conn);
+}
+
+
+?>
+
+
+
 <section class="review-investor">
 
     <h5 class="pt-2 px-5 text-center ">There are many reasons to invest</h5>
@@ -5,71 +32,58 @@
 
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item active">
 
+            <?php
 
+            $flag=true;
 
-                <div class=" testimonial card mx-auto mb-2" style="max-width: 640px;">
-                    <div class="row g-0">
-                        <div class=" col-lg-4 col-md-4 my-auto ">
-                            <img src="../images/profile.jpg" class="img-fluid rounded-circle shadow-4 p-3 mx-auto"
-                                style="width: 250px; max-height:180px;" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title"><em>John Doe</em></h5>
-                                <p class="card-text">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-                                    quo est cumque a id quisquam odio. Officiis, quia saepe, eaque nulla quisquam,
-                                    reprehenderit incidunt error commodi aliquid modi suscipit fuga"</p>
+            while($rowSelectFeedback=mysqli_fetch_assoc($resultSelectFeedback)){
+                if($flag){
+                    
+                    echo '  <div class="carousel-item active">
 
-                            </div>
-                        </div>
+                   <div class=" testimonial card mx-auto mb-2" style="max-width: 640px;">
+                        
+                           
+                           
+                                <div class="card-body px-5 py-3">
+                                    <h5 class="card-title mx-3 "><em>'.$rowSelectFeedback['f_email'].'</em></h5>
+                                    <p class="card-text my-3">"'.$rowSelectFeedback['f_desc'].'"</p>
+    
+                                </div>
+                            
+                       
                     </div>
-                </div>
+    
+                </div>';
 
-            </div>
+                }
+                else{
 
-
-            <div class="carousel-item">
-                <div class=" testimonial card mx-auto mb-2" style="max-width: 640px;">
-                    <div class="row g-0">
-                        <div class="col-lg-4 col-md-4  my-auto ">
-                            <img src="../images/profile.jpg" class="img-fluid rounded-circle shadow-4 p-3 mx-auto"
-                                style="width: 250px; max-height:180px;" alt="...">
-                        </div>
-                        <div class="col-md-8 ">
-                            <div class="card-body">
-                                <h5 class="card-title"><em>John Doe</em></h5>
-                                <p class="card-text">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-                                    quo est cumque a id quisquam odio. Officiis, quia saepe, eaque nulla quisquam,
-                                    reprehenderit incidunt error commodi aliquid modi suscipit fuga"</p>
-
-                            </div>
-                        </div>
+                    echo ' <div class="carousel-item">
+                    <div class=" testimonial card mx-auto mb-2" style="max-width: 640px;">
+                      
+                                <div class="card-body px-5 py-3">
+                                    <h5 class="card-title  mx-3"><em>'.$rowSelectFeedback['f_email'].'</em></h5>
+                                    <p class="card-text my-3">"'.$rowSelectFeedback['f_desc'].'"</p>
+    
+                                </div>
+                           
                     </div>
-                </div>
-            </div>
+                </div';
+
+                }
+                $flag=false;
+            }
 
 
-            <div class="carousel-item">
-                <div class=" testimonial card mx-auto mb-2" style="max-width: 640px;">
-                    <div class="row g-0">
-                        <div class="col-lg-4 col-md-4  my-auto ">
-                            <img src="../images/profile.jpg" class="img-fluid rounded-circle shadow-4 p-3 mx-auto"
-                                style="width: 250px; max-height:180px;" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title"><em>John Doe</em></h5>
-                                <p class="card-text">"Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae
-                                    quo est cumque a id quisquam odio. Officiis, quia saepe, eaque nulla quisquam,
-                                    reprehenderit incidunt error commodi aliquid modi suscipit fuga"</p>
+            ?>
+          
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+           
+
+            
 
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"

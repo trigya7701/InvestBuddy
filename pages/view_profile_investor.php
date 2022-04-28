@@ -21,6 +21,7 @@ session_start();
 
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/profileInvestor.css">
+    <link rel="stylesheet" href="../css/footer.css"> 
     <title>InvestBuddy | Profile Investor</title>
 </head>
 
@@ -31,6 +32,9 @@ session_start();
 
 
    <?php include('../components/viewProfileInvestor.php'); ?>
+
+     <!-- Footer -->
+     <?php include('../components/footer.php'); ?>
 
 
 </body>

@@ -182,8 +182,8 @@
                                     <a href="signup_startup.php">
                                         <p>or Sign up as Startup</p>
                                     </a>
-                                    <a href="signin.php">
-                                        <p>Have Account ? Sign in</p>
+                                    <a href="signup_investor.php">
+                                        <p>or Sign up as Investor</p>
                                     </a>
 
                                 </div>

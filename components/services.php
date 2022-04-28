@@ -1,9 +1,9 @@
 <section class="service p-5">
 
     <div class="row">
-        <div class="col-sm-6 ">
-            <div class="card service-card">
-                <div class="card-body">
+        <div class="col-sm-6 my-1">
+            <div class="card service-card ">
+                <div class="card-body ">
                     <h5 class="card-title">Are you an Investor ?</h5>
                     <p class="card-text">Discover and invest in hand-picked companies. Get special allocations and start
                         building your investing portfolio.A curated selection of companies across every industry.</p>
@@ -11,12 +11,12 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 ">
-            <div class="card service-card">
+        <div class="col-sm-6 my-1 ">
+            <div class="card service-card ">
                 <div class="card-body">
                     <h5 class="card-title">Are you a Startup ?</h5>
                     <p class="card-text">Raise funds in STEALTH with a carefully vetted list of investors and have
-                        access to value-added finance. Bring all investors into your cap table as a single entity.</p>
+                        access to value-added finance. Bring all investors across varoius industry into your cap table as a single entity .</p>
                     <a href="#" class="btn btn-info">Start your Raise</a>
                 </div>
             </div>
@@ -29,7 +29,7 @@
 
         <div class="row">
             <div class="col-lg-4  ">
-                <div class="card service-feature-card border-0">
+                <div class="card service-feature-card border-0 ">
                     <div class="card-body">
                     <i class="fa-solid fa-2x fa-building-columns"></i>
                     

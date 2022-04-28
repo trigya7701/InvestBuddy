@@ -33,6 +33,7 @@ else{
 
     <link rel="stylesheet" href="../css/navbar.css">
     <link rel="stylesheet" href="../css/profileInvestor.css">
+    <link rel="stylesheet" href="../css/footer.css"> 
     <title>InvestBuddy | Profile</title>
 </head>
 
@@ -49,6 +50,8 @@ else{
 
     <!-- Profile Investor -->
     <?php include('../components/profileInvestor.php'); ?>
+      <!-- Footer -->
+      <?php include('../components/footer.php'); ?>
 
 
 </body>

@@ -245,6 +245,114 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                   </div>';
     }
 }
+
+if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal8']) && isset($_FILES['profile_image']))) {
+
+    $profile_img_name = $_FILES['profile_image']['name'];
+    $profile_img_size = $_FILES['profile_image']['size'];
+    $tmp_name = $_FILES['profile_image']['tmp_name'];
+    $error = $_FILES['profile_image']['error'];
+    echo $profile_img_name;
+
+    try {
+
+        if ($error === 0) {
+            if ($profile_img_size > 125000) {
+                throw new Exception("Sorry, your file is too large.");
+            } else {
+                $profile_img_ex = pathinfo($profile_img_name, PATHINFO_EXTENSION);
+                $profile_img_ex_lc = strtolower($profile_img_ex);
+
+                $allowed_exs = array("jpg", "jpeg", "png");
+
+                if (in_array($profile_img_ex_lc, $allowed_exs)) {
+                    $profile_new_img_name = uniqid("PROFILE-", true) . '.' . $profile_img_ex_lc;
+                    $profile_img_upload_path = '../profile-images/' . $profile_new_img_name;
+
+
+
+                    //database logic
+                    mysqli_begin_transaction($conn);
+                    mysqli_autocommit($conn, FALSE);
+
+                    $sqlUpdateInvestorProfile = "UPDATE `investors` SET `investor_profile`='$profile_new_img_name'
+                    WHERE`investor_email`='$email_id'";
+                    $resultUpdatInvestorProfile = mysqli_query($conn, $sqlUpdateInvestorProfile) ?: throw new Exception(mysqli_error($conn));
+
+                    mysqli_commit($conn);
+                    move_uploaded_file($tmp_name, $profile_img_upload_path);
+
+                    echo '<div class="toast show align-items-center text-white bg-info border-0 mt-2 mx-2" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="d-flex">
+                            <div class="toast-body">
+                      Profile Image Updated !!
+                            </div>
+                            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>';
+                } else {
+                    throw new Exception("You can't upload files of this type");
+                }
+            }
+        } else {
+            throw new Exception("Errpr");
+        }
+    } catch (\Throwable $th) {
+
+        //throw $th;
+        mysqli_rollback($conn);
+        echo $th;
+        echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+           Something went wrong !! Please try again.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>';
+    }
+}
+
+if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-img']))) {
+
+    $profile_image_url = $_POST['profile_image'];
+   // echo $profile_image_url;
+    mysqli_begin_transaction($conn);
+    mysqli_autocommit($conn, FALSE);
+
+    try {
+
+        $sqlDeleteProfileImage = "UPDATE`investors` SET `investor_profile`= NULL
+        WHERE`investor_email`='$email_id'";
+        $resultDeleteProfileImage = mysqli_query($conn, $sqlDeleteProfileImage) ?: throw new Exception(mysqli_error($conn));
+
+
+        $file_path =  "../profile-images/" . $profile_image_url;
+        unlink($file_path) ?: throw new Exception("Error");
+        mysqli_commit($conn);
+
+        echo '<div class="toast show align-items-center text-white bg-info border-0 mt-2 mx-2" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+        <div class="toast-body">
+        Image Deleted !!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>';
+    } catch (\Throwable $th) {
+        //throw $th;
+        mysqli_rollback($conn);
+        //echo $th;
+        echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body">
+           Something went wrong !! Please try again.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>';
+    }
+}
 ?>
 
 
@@ -273,28 +381,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                 <div class="mb-3">
                                                     <label for="recipient-name" class="col-form-label">Linked In
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-name" name="linkedin">
+                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectInvestors['investor_linkedin'];?>" placeholder="<?php echo $rowSelectInvestors['investor_linkedin'];?>" name="linkedin">
                                                     <p class="error"> <?php echo $linkedin_error; ?></p>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-twiiter" class="col-form-label">Twitter :
                                                     </label>
-                                                    <input type="text" class="form-control" id="recipient-twitter" name="twitter">
+                                                    <input type="text" class="form-control" id="recipient-twitter" value="<?php echo $rowSelectInvestors['investor_twitter'];?>" placeholder="<?php echo $rowSelectInvestors['investor_twitter'];?>" name="twitter">
                                                     <p class="error"> <?php echo $twitter_error; ?></p>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-instagram" class="col-form-label">Instagram
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-instagram" name="instagram">
+                                                    <input type="text" class="form-control" id="recipient-instagram" value="<?php echo $rowSelectInvestors['investor_instagram'];?>" placeholder="<?php echo $rowSelectInvestors['investor_instagram'];?>" name="instagram">
                                                     <p class="error"> <?php echo $instagram_error; ?></p>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-facebook" class="col-form-label">Facebook
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-facebook" name="facebook">
+                                                    <input type="text" class="form-control" id="recipient-facebook" value="<?php echo $rowSelectInvestors['investor_facebook'];?>" placeholder="<?php echo $rowSelectInvestors['investor_facebook'];?>" name="facebook">
                                                     <p class="error"> <?php echo $facebook_error; ?></p>
                                                 </div>
 
@@ -318,7 +426,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                             <?php
 
                             if ($rowSelectInvestors['investor_profile'] !== NULL) {
-                                echo $rowSelectInvestors['investor_profile'];
+                                echo  ' <img src="../profile-images/' . $rowSelectInvestors['investor_profile'] . '" alt="Admin"
+                                class="rounded-circle" width="150">';
                             } else {
                                 echo ' <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
                             class="rounded-circle" width="150">';
@@ -331,7 +440,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                 <p class="text-muted font-size-sm">
                                     <?php echo $rowSelectInvestors['investor_address']; ?></p>
 
-                                <button class="btn btn-outline-info">Message</button>
+                                    <form action="" method="POST">
+                                    <div class="d-grid gap-2 d-md-block">
+                                        <button type="button" class="btn btn-outline-info btn-sm " data-bs-toggle="modal" data-bs-target="#exampleModal8" data-bs-whatever="@mdo"> Edit Profile  <i class="fa-solid fa-pencil"></i></button>
+
+                                        <input class="form-control form-control-sm" type="hidden" value="<?php echo $rowSelectInvestors['investor_profile']; ?>" name="profile_image" placeholder=".form-control-sm" aria-label=".form-control-sm example">
+                                        <button type="submit" class="btn btn-info btn-sm" name="btn-delete-profile-img">Delete Profile <i class="fa-solid fa-trash-can mx-1"></i></button>
+
+
+
+                                    </div>
+                                </form>
+
+                                <div class="modal fade" id="exampleModal8" tabindex="-1" aria-labelledby="exampleModalLabel8" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel8">New message</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="" method="POST" enctype="multipart/form-data">
+                                                <div class="modal-body">
+
+                                                    <div class="mb-3">
+                                                        <label for="formFileSm1" class="form-label">Small file
+                                                            input example</label>
+                                                        <input class="form-control form-control-sm" id="formFileSm1" type="file" name="profile_image" required>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" name="btn-modal8">Update</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
@@ -340,12 +485,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                 <div class="card mt-3">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                    </path>
-                                </svg>Linked In</h6>
+                            <h6 class="mb-0"><i class="fa-brands fa-linkedin"></i> Linked In</h6>
                             <span class="text-secondary"><?php echo empty($rowSelectInvestors['investor_linkedin']) ? 'Not Linked' : $rowSelectInvestors['investor_linkedin']; ?></span>
                         </li>
 
@@ -395,7 +535,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                 <div class="mb-3">
                                                     <label for="recipient-name" class="col-form-label">Full Name
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-name" name="full_name" required>
+                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectInvestors['investor_name'];?>" placeholder="<?php echo $rowSelectInvestors['investor_name'];?>" name="full_name" required>
 
                                                 </div>
 
@@ -404,13 +544,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                 <div class="mb-3">
                                                     <label for="recipient-phone" class="col-form-label">Phone
                                                         :</label>
-                                                    <input type="number" class="form-control" id="recipient-phone" name="phone" required>
+                                                    <input type="number" class="form-control" id="recipient-phone" value="<?php echo $rowSelectInvestors['investor_phone'];?>" placeholder="<?php echo $rowSelectInvestors['investor_phone'];?>" name="phone" required>
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="message-text" class="col-form-label">Address :</label>
-                                                    <textarea class="form-control" id="message-text" name="address" required></textarea>
+                                                    <textarea class="form-control" id="message-text" value="<?php echo $rowSelectInvestors['investor_address'];?>" placeholder="<?php echo $rowSelectInvestors['investor_address'];?>" name="address" required></textarea>
                                                 </div>
 
                                                 <div class="modal-footer">
@@ -490,7 +630,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                         <div class="mb-3">
                                                             <label for="recipient-company" class="col-form-label">Company
                                                                 :</label>
-                                                            <input type="text" class="form-control" id="recipient-company" name="company_name">
+                                                            <input type="text" class="form-control" id="recipient-company" value="<?php echo $rowSelectInvestors['investor_company'];?>" placeholder="<?php echo $rowSelectInvestors['investor_company']?>" comapny name="company_name">
 
                                                         </div>
 
@@ -500,7 +640,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                             <label for="recipient-domain" class="col-form-label">Startup
                                                                 Domain
                                                                 :</label>
-                                                            <input type="text" class="form-control" id="recipient-domain" name="startup_domain">
+                                                            <input type="text" class="form-control" id="recipient-domain" value="<?php echo $rowSelectInvestors['investor_startup_domain'];?>" placeholder="<?php echo $rowSelectInvestors['investor_startup_domain'];?>" name="startup_domain">
 
                                                         </div>
 
@@ -508,14 +648,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                         <div class="mb-3">
                                                             <label for="recipient-investment" class="col-form-label">Minimum Investment
                                                                 :</label>
-                                                            <input type="text" class="form-control" id="recipient-investment" name="minimum_investment">
+                                                            <input type="text" class="form-control" id="recipient-investment" value="<?php echo $rowSelectInvestors['investor_minimum_investment'];?>" placeholder="<?php echo $rowSelectInvestors['investor_minimum_investment'];?>" name="minimum_investment">
 
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="recipient-salary" class="col-form-label">Annual
                                                                 Salary
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-salary" name="salary">
+                                                            <input type="number" class="form-control" id="recipient-salary" value="<?php echo $rowSelectInvestors['investor_salary'];?>" placeholder="<?php echo $rowSelectInvestors['investor_salary'];?>" name="salary">
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -599,7 +739,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                         <div class="mb-3">
                                                             <label for="recipient-experience" class="col-form-label">Experience
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-experience" name="experience">
+                                                            <input type="number" class="form-control" id="recipient-experience" value="<?php echo $rowSelectInvestors['investor_experience'];?>" placeholder="<?php echo $rowSelectInvestors['investor_experience'];?>" name="experience">
 
                                                         </div>
 
@@ -608,7 +748,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                         <div class="mb-3">
                                                             <label for="recipient-startups_invested" class="col-form-label">Startup Invested In
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-startups_invested" name="startup_invested_in">
+                                                            <input type="number" class="form-control" id="recipient-startups_invested" value="<?php echo $rowSelectInvestors['investor_startup_count'];?>" placeholder="<?php echo $rowSelectInvestors['investor_startup_count'];?>" name="startup_invested_in">
 
                                                         </div>
 
@@ -616,13 +756,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal4'])) {
                                                         <div class="mb-3">
                                                             <label for="recipient-amount_invested" class="col-form-label">Total Amount Invested
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-amount_invested" name="total_amount_invested">
+                                                            <input type="number" class="form-control" id="recipient-amount_invested" value="<?php echo $rowSelectInvestors['investor_amount_invested'];?>" placeholder="<?php echo $rowSelectInvestors['investor_amount_invested'];?>" name="total_amount_invested">
 
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="recipient-connections" class="col-form-label">Connections
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-connections" name="connections">
+                                                            <input type="number" class="form-control" id="recipient-connections" value="<?php echo $rowSelectInvestors['investor_connections'];?>" placeholder="<?php echo $rowSelectInvestors['investor_connections'];?>" name="connections">
 
                                                         </div>
                                                         <div class="modal-footer">

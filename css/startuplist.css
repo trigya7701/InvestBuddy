@@ -10,3 +10,8 @@
 .startup-content{
     margin: 2% 0;
 }
+.card-img-top {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
