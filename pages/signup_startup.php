@@ -86,8 +86,8 @@
                 $sqlInsertUsers = "INSERT INTO `users`(`user_email`, `user_password`, `user_role`) VALUES ('$email_id','$password','Startup')";
                 $sqlInsertStartup = "INSERT INTO `startups`( `startup_name`, `startup_email`, `startup_phone`, `startup_address`, `startup_valuation`) VALUES ('$company_name','$email_id','$phone','$address','$valuation')";
 
-                $resultInsertUsers = mysqli_query($conn, $sqlInsertUsers) ?: throw new Exception("Query Failed1");
-                $resultInsertStartup = mysqli_query($conn, $sqlInsertStartup) ?: throw new Exception("Query Failed2");
+                $resultInsertUsers = mysqli_query($conn, $sqlInsertUsers) ?: throw new Exception(mysqli_error($conn));
+                $resultInsertStartup = mysqli_query($conn, $sqlInsertStartup) ?: throw new Exception(mysqli_error($conn));
 
                 $sqlSelectStartup = "SELECT `startup_id` FROM `startups` WHERE startup_email='$email_id'";
                 $resultSelectStartup = mysqli_query($conn, $sqlSelectStartup) ?: throw new Exception("Query Failed3");
@@ -114,7 +114,7 @@
                 //throw $th;
 
 
-
+                echo $th;
                 mysqli_rollback($conn);
                 echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">

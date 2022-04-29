@@ -393,7 +393,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal7']) && isse
     $document_error = $_FILES['document']['error'];
 
 
-    echo $document_name;
+  //  echo $document_name;
 
 
 
@@ -442,7 +442,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal7']) && isse
 
         //throw $th;
         mysqli_rollback($conn);
-        echo $th;
+       // echo $th;
         echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
@@ -501,7 +501,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal8']) && isse
     $profile_img_size = $_FILES['profile_image']['size'];
     $tmp_name = $_FILES['profile_image']['tmp_name'];
     $error = $_FILES['profile_image']['error'];
-    echo $profile_img_name;
+    //echo $profile_img_name;
 
     try {
 
