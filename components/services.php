@@ -1,4 +1,9 @@
-<section class="service p-5">
+
+<?php
+
+if (!isset($_SESSION['user_id']) && !isset($_SESSION['user_email'])) {
+
+    echo '<section class="service p-5">
 
     <div class="row">
         <div class="col-sm-6 my-1">
@@ -76,8 +81,10 @@
 
 
 
-</section>
+</section>';
+}
 
+?>
 
 <section class="features">
     <div class="container">

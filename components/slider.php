@@ -20,7 +20,8 @@
                         <div class="card-body">
                             <h1 class="card-title">Invest in founders building the future</h1>
                             <p class="card-text">Invest as little as ₹1000 in the startups and small businesses you believe in.</p>
-                            <button type="button" class="btn btn-info">Sign Up for Free</button>
+                            <a  class="btn btn-info" href="../pages/signin.php">Sign Up for Free</a>
+
 
                         </div>
                     </div>
@@ -43,7 +44,7 @@
                         <div class="card-body">
                             <h1 class="card-title">Turning Your Ideas into Reality</h1>
                             <p class="card-text">Join us to be part of this startup revolution.</p>
-                            <button type="button" class="btn btn-info">Sign Up for Free</button>
+                            <a  class="btn btn-info" href="../pages/signin.php">Sign Up for Free</a>
 
                         </div>
                     </div>
@@ -64,7 +65,8 @@
                         <div class="card-body">
                             <h1 class="card-title">Everyone should have the opportunity to invest in the next great thing.</h1>
                             <p class="card-text">We’ll help you become an angel investor and back the newest crop of visionary companies..</p>
-                            <button type="button" class="btn btn-info">Sign Up for Free</button>
+                            <a  class="btn btn-info" href="../pages/signin.php">Sign Up for Free</a>
+
 
                         </div>
                     </div>

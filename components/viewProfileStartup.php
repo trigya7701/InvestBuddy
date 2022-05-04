@@ -34,6 +34,41 @@ try {
 ?>
 
 
+<?php
+
+
+    if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['send'])){
+        //echo 'send';
+        $message=$_POST['message'];
+        $chatId=$_POST['chat_id'];
+        $email=$_SESSION['user_email'];
+        //echo $message;
+       // echo $chatId;
+
+        mysqli_begin_transaction($conn);
+        try {
+
+            $sqlInsertPosts="INSERT INTO `posts`(`post_message`,  `user_email`, `chat_id`) 
+                            VALUES ('$message','$email','$chatId')";
+            $sqlInsertPosts=mysqli_query($conn,$sqlInsertPosts)?:throw new Exception(mysqli_error($conn));
+            mysqli_commit($conn);
+           
+        } catch (\Throwable $th) {
+            //throw $th;
+            mysqli_rollback($conn);
+            echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+              <div class="toast-body">
+               Something went wrong !! Please try again.
+              </div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          </div>';
+        }
+    }
+?>
+
+
 <div class="container">
     <div class="main-body">
 
@@ -59,6 +94,150 @@ try {
 
                                 <p class="text-muted font-size-sm"> <?php echo $rowSelectStartup['startup_address']; ?>
                                 </p>
+
+
+                                <?php
+
+                                if (isset($_SESSION['user_email']) && $_SESSION['user_email'] != $email_id) {
+                                    //  echo '<button class="btn btn-outline-info">Message</button>';
+                                    $chatExists = false;
+                                    $chat_id;
+
+                                    $sender_email = $_SESSION['user_email'];
+                                    $reciever_email = $email_id;
+                                    mysqli_begin_transaction($conn);
+
+                                    try {
+
+                                        $sqlSelectChats = "SELECT * FROM `chats` WHERE 
+                                                        ( user1_email='$sender_email' AND user2_email='$reciever_email')
+                                                        OR (user1_email='$reciever_email' AND user2_email='$sender_email')";
+                                        $resultSelectChats = mysqli_query($conn, $sqlSelectChats) ?: throw new Exception(mysqli_error($conn));
+
+                                        $numSelectChat = mysqli_num_rows($resultSelectChats);
+                                        if ($numSelectChat == 1) {
+                                            $chatExists = true;
+
+
+                                            while ($rowSelectChats = mysqli_fetch_assoc($resultSelectChats)) {
+                                                $chat_id = $rowSelectChats['chat_id'];
+                                            }
+                                        }
+                                    } catch (\Throwable $th) {
+                                        //throw $th;
+
+                                        mysqli_rollback($conn);
+                                        echo $th;
+                                    }
+
+
+
+                                    echo '
+                                     
+                                    
+                                      <button type="submit" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            Message
+                                            </button>
+                                          
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalLabel">' . $email_id . '</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  data-backdrop="static" data-keyboard="false"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                 ';
+                                    if ($chatExists) {
+                                        
+
+                                        mysqli_begin_transaction($conn);
+                                        try {
+
+                                            $sqlSelectPosts = "SELECT * FROM `posts` WHERE chat_id='$chat_id' ORDER BY post_time ASC";
+                                            $resultSelectPosts = mysqli_query($conn, $sqlSelectPosts) ?: throw new Exception(mysqli_error($conn));
+
+                                            $numSelectPosts = mysqli_num_rows($resultSelectPosts);
+                                            if ($numSelectPosts == 0) {
+                                                echo '<div class="card m-3 bg-warning">
+                                                            <div class="card-body text-dark">
+                                                             Type Something to start your conversation.
+                                                            </div>
+                                                          </div>';
+                                            } else {
+                                               
+                                                while ($rowSelectPosts = mysqli_fetch_assoc($resultSelectPosts)) {
+                                           
+
+                                                echo '
+                                                <div class="card card-stats mx-4 my-2 ">
+                                                    <div class="card-body   ">
+                                                        <p class="text-start m-0 p-0"><strong>'.$rowSelectPosts['user_email'].'</strong></p>
+                                                        <p class="text-start m-0 p-0">'.$rowSelectPosts['post_message'].'</p>
+                                                        <p class="text-end m-0 p-0"><small>'.$rowSelectPosts['post_time'].'</small></p>
+                            
+                                                    </div>
+                                                </div>';
+
+                                                }
+                                               
+                                            }
+                                        } catch (\Throwable $th) {
+                                            //throw $th;
+                                            mysqli_rollback($conn);
+                                            echo $th;
+                                        }
+                                    } else {
+                                        mysqli_begin_transaction($conn);
+
+                                        try {
+                                            $chat_name = $sender_email . $reciever_email;
+
+
+                                            $sqlInsertChats = "INSERT INTO `chats`( `chat_name`,  `user1_email`, `user2_email`)
+                                                                         VALUES ('$chat_name','$sender_email','$reciever_email')";
+                                            $resultInsertChats = mysqli_query($conn, $sqlInsertChats) ?: throw new Exception(mysqli_error($conn));
+
+                                            $sqlSelectChats2 = "SELECT * FROM `chats` WHERE chat_name='$chat_name'";
+                                            $resultSelectChats2 = mysqli_query($conn, $sqlSelectChats2) ?: throw new Exception(mysqli_error($conn));
+
+                                            while($rowSelectChats2=mysqli_fetch_assoc($resultSelectChats2)){
+                                                $chat_id=$rowSelectChats2['chat_id'];
+                                            }
+
+                                        } catch (\Throwable $th) {
+                                            //throw $th;
+                                            mysqli_rollback($conn);
+                                            echo $th;
+                                        }
+                                    }
+                                    echo '</div>
+                                             <form action="" method="POST">
+                                                <div class="modal-footer">
+
+                                                   
+                                                  
+                                                    <div class="input-group mb-3">
+
+                                                    <input type="hidden"  name="chat_id" value="'.$chat_id.'">
+                                                        <input type="text" class="form-control" placeholder="Send Message" name="message" aria-label="Recipients username" aria-describedby="button-addon2">
+                                                        <button class="btn btn-primary" type="submit"   name="send" id="button-addon2" >Send</button>
+                                                       
+                                                    </div>
+                                                    
+                                                </div>
+                                                </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                         ';
+                                } else {
+                                    echo '<button class="btn btn-info disabled">Message</button>';
+                                }
+
+
+                                ?>
+
 
 
 
@@ -121,6 +300,11 @@ try {
                             <h6 class="mb-0"><span class="m-1"><i class="fa-solid fa-calendar-days"></i></span>Founded
                                 in </h6>
                             <span class="text-secondary"><?php echo empty($rowSelectStartup['startup_founded_in']) ? 'Not Linked' : $rowSelectStartup['startup_founded_in']; ?></span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><span class="m-1"><i class="fa-solid fa-briefcase"></i></span>Domain
+                           </h6>
+                            <span class="text-secondary"><?php echo empty($rowSelectStartup['startup_domain']) ? 'Not Linked' : $rowSelectStartup['startup_domain']; ?></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0"><span class="m-1"><i class="fa-solid fa-magnifying-glass-dollar"></i></span>Revenue</h6>
@@ -330,14 +514,14 @@ try {
                                             while ($rowSelectDocument = mysqli_fetch_assoc($resultSelectDocument)) {
 
                                                 echo '<div class="col">
-            <div class="card">
-            
-            <iframe src="../documents/' . $rowSelectDocument['startup_document'] . '" height="300px">
-            </iframe>
-            <form action="" method="POST">
-            <input class="form-control form-control-sm" type="hidden" value="' . $rowSelectDocument['startup_document'] . '" name="document" placeholder=".form-control-sm" aria-label=".form-control-sm example">
-            <button type="submit" class="btn btn-outline-info btn-sm m-2" name="btn-delete-document">Delete<i class="fa-solid fa-trash-can mx-1"></i></button>
-            </form>
+                                                <div class="card">
+                                                
+                                                <iframe src="../documents/' . $rowSelectDocument['startup_document'] . '" height="300px">
+                                                </iframe>
+                                                <form action="" method="POST">
+                                                <input class="form-control form-control-sm" type="hidden" value="' . $rowSelectDocument['startup_document'] . '" name="document" placeholder=".form-control-sm" aria-label=".form-control-sm example">
+                                                <button type="submit" class="btn btn-outline-info btn-sm m-2" name="btn-delete-document">Delete<i class="fa-solid fa-trash-can mx-1"></i></button>
+                                                </form>
 
                 
 
@@ -369,3 +553,5 @@ try {
 
     </div>
 </div>
+
+
