@@ -103,7 +103,7 @@
             mysqli_commit($conn);
         } catch (\Throwable $th) {
             //throw $th;
-            echo $th;
+            //echo $th;
 
             mysqli_rollback($conn);
             echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">

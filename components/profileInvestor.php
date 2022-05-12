@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal1'])) {
     $twitter = $_POST['twitter'];
     $instagram = $_POST['instagram'];
     $facebook = $_POST['facebook'];
+    $website=$_POST['website'];
 
 
 
@@ -64,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal1'])) {
 
         $sqlUpdateInvestors = "UPDATE `investors` SET `investor_linkedin`='$linkedin',
                                 `investor_twitter`='$twitter',`investor_facebook`='$facebook',
-                                `investor_instagram`='$instagram' 
+                                `investor_instagram`='$instagram',`investor_website`='$website'  
                                 WHERE  investor_email='$email_id'";
 
         $resultUpdateInvestors = mysqli_query($conn, $sqlUpdateInvestors) ?: throw new Exception('Query Failed');;
@@ -316,7 +317,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal8']) && isse
 if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-img']))) {
 
     $profile_image_url = $_POST['profile_image'];
-   // echo $profile_image_url;
+    // echo $profile_image_url;
     mysqli_begin_transaction($conn);
     mysqli_autocommit($conn, FALSE);
 
@@ -328,7 +329,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
 
 
         $file_path =  "../profile-images/" . $profile_image_url;
-       
+
         unlink($file_path) ?: throw new Exception("Error");
         mysqli_commit($conn);
 
@@ -359,7 +360,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
 
 <div class="container">
 
-      
+
     <div class="main-body">
 
 
@@ -381,31 +382,37 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                         </div>
                                         <div class="modal-body">
                                             <form action="" method="POST">
+                                            <div class="mb-3">
+                                                    <label for="recipient-name" class="col-form-label">Website
+                                                        :</label>
+                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectInvestors['investor_website']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_website']; ?>" name="website">
+                                                 
+                                                </div>
                                                 <div class="mb-3">
                                                     <label for="recipient-name" class="col-form-label">Linked In
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectInvestors['investor_linkedin'];?>" placeholder="<?php echo $rowSelectInvestors['investor_linkedin'];?>" name="linkedin">
+                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectInvestors['investor_linkedin']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_linkedin']; ?>" name="linkedin">
                                                     <p class="error"> <?php echo $linkedin_error; ?></p>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-twiiter" class="col-form-label">Twitter :
                                                     </label>
-                                                    <input type="text" class="form-control" id="recipient-twitter" value="<?php echo $rowSelectInvestors['investor_twitter'];?>" placeholder="<?php echo $rowSelectInvestors['investor_twitter'];?>" name="twitter">
+                                                    <input type="text" class="form-control" id="recipient-twitter" value="<?php echo $rowSelectInvestors['investor_twitter']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_twitter']; ?>" name="twitter">
                                                     <p class="error"> <?php echo $twitter_error; ?></p>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-instagram" class="col-form-label">Instagram
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-instagram" value="<?php echo $rowSelectInvestors['investor_instagram'];?>" placeholder="<?php echo $rowSelectInvestors['investor_instagram'];?>" name="instagram">
+                                                    <input type="text" class="form-control" id="recipient-instagram" value="<?php echo $rowSelectInvestors['investor_instagram']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_instagram']; ?>" name="instagram">
                                                     <p class="error"> <?php echo $instagram_error; ?></p>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-facebook" class="col-form-label">Facebook
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-facebook" value="<?php echo $rowSelectInvestors['investor_facebook'];?>" placeholder="<?php echo $rowSelectInvestors['investor_facebook'];?>" name="facebook">
+                                                    <input type="text" class="form-control" id="recipient-facebook" value="<?php echo $rowSelectInvestors['investor_facebook']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_facebook']; ?>" name="facebook">
                                                     <p class="error"> <?php echo $facebook_error; ?></p>
                                                 </div>
 
@@ -443,9 +450,9 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                 <p class="text-muted font-size-sm">
                                     <?php echo $rowSelectInvestors['investor_address']; ?></p>
 
-                                    <form action="" method="POST">
+                                <form action="" method="POST">
                                     <div class="d-grid gap-2 d-md-block">
-                                        <button type="button" class="btn btn-outline-info btn-sm " data-bs-toggle="modal" data-bs-target="#exampleModal8" data-bs-whatever="@mdo"> Edit Profile  <i class="fa-solid fa-pencil"></i></button>
+                                        <button type="button" class="btn btn-outline-info btn-sm " data-bs-toggle="modal" data-bs-target="#exampleModal8" data-bs-whatever="@mdo"> Edit Profile <i class="fa-solid fa-pencil"></i></button>
 
                                         <input class="form-control form-control-sm" type="hidden" value="<?php echo $rowSelectInvestors['investor_profile']; ?>" name="profile_image" placeholder=".form-control-sm" aria-label=".form-control-sm example">
                                         <button type="submit" class="btn btn-info btn-sm" name="btn-delete-profile-img">Delete Profile <i class="fa-solid fa-trash-can mx-1"></i></button>
@@ -487,6 +494,15 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                 </div>
                 <div class="card mt-3">
                     <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                    </path>
+                                </svg>Website</h6>
+                            <span class="text-secondary"><?php echo empty($rowSelectInvestors['investor_website']) ? 'Not Linked' : $rowSelectInvestors['investor_website']; ?></span>
+                        </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0"><i class="fa-brands fa-linkedin"></i> Linked In</h6>
                             <span class="text-secondary"><?php echo empty($rowSelectInvestors['investor_linkedin']) ? 'Not Linked' : $rowSelectInvestors['investor_linkedin']; ?></span>
@@ -538,7 +554,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                 <div class="mb-3">
                                                     <label for="recipient-name" class="col-form-label">Full Name
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectInvestors['investor_name'];?>" placeholder="<?php echo $rowSelectInvestors['investor_name'];?>" name="full_name" required>
+                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectInvestors['investor_name']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_name']; ?>" name="full_name" required>
 
                                                 </div>
 
@@ -547,13 +563,13 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                 <div class="mb-3">
                                                     <label for="recipient-phone" class="col-form-label">Phone
                                                         :</label>
-                                                    <input type="number" class="form-control" id="recipient-phone" value="<?php echo $rowSelectInvestors['investor_phone'];?>" placeholder="<?php echo $rowSelectInvestors['investor_phone'];?>" name="phone" required>
+                                                    <input type="number" class="form-control" id="recipient-phone" value="<?php echo $rowSelectInvestors['investor_phone']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_phone']; ?>" name="phone" required>
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="message-text" class="col-form-label">Address :</label>
-                                                    <textarea class="form-control" id="message-text" value="<?php echo $rowSelectInvestors['investor_address'];?>" placeholder="<?php echo $rowSelectInvestors['investor_address'];?>" name="address" required></textarea>
+                                                    <textarea class="form-control" id="message-text" value="<?php echo $rowSelectInvestors['investor_address']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_address']; ?>" name="address" required></textarea>
                                                 </div>
 
                                                 <div class="modal-footer">
@@ -633,7 +649,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                         <div class="mb-3">
                                                             <label for="recipient-company" class="col-form-label">Company
                                                                 :</label>
-                                                            <input type="text" class="form-control" id="recipient-company" value="<?php echo $rowSelectInvestors['investor_company'];?>" placeholder="<?php echo $rowSelectInvestors['investor_company']?>" comapny name="company_name">
+                                                            <input type="text" class="form-control" id="recipient-company" value="<?php echo $rowSelectInvestors['investor_company']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_company'] ?>" comapny name="company_name">
 
                                                         </div>
 
@@ -643,7 +659,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                             <label for="recipient-domain" class="col-form-label">Startup
                                                                 Domain
                                                                 :</label>
-                                                            <input type="text" class="form-control" id="recipient-domain" value="<?php echo $rowSelectInvestors['investor_startup_domain'];?>" placeholder="<?php echo $rowSelectInvestors['investor_startup_domain'];?>" name="startup_domain">
+                                                            <input type="text" class="form-control" id="recipient-domain" value="<?php echo $rowSelectInvestors['investor_startup_domain']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_startup_domain']; ?>" name="startup_domain">
 
                                                         </div>
 
@@ -651,14 +667,14 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                         <div class="mb-3">
                                                             <label for="recipient-investment" class="col-form-label">Minimum Investment
                                                                 :</label>
-                                                            <input type="text" class="form-control" id="recipient-investment" value="<?php echo $rowSelectInvestors['investor_minimum_investment'];?>" placeholder="<?php echo $rowSelectInvestors['investor_minimum_investment'];?>" name="minimum_investment">
+                                                            <input type="text" class="form-control" id="recipient-investment" value="<?php echo $rowSelectInvestors['investor_minimum_investment']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_minimum_investment']; ?>" name="minimum_investment">
 
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="recipient-salary" class="col-form-label">Annual
                                                                 Salary
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-salary" value="<?php echo $rowSelectInvestors['investor_salary'];?>" placeholder="<?php echo $rowSelectInvestors['investor_salary'];?>" name="salary">
+                                                            <input type="number" class="form-control" id="recipient-salary" value="<?php echo $rowSelectInvestors['investor_salary']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_salary']; ?>" name="salary">
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -742,7 +758,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                         <div class="mb-3">
                                                             <label for="recipient-experience" class="col-form-label">Experience
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-experience" value="<?php echo $rowSelectInvestors['investor_experience'];?>" placeholder="<?php echo $rowSelectInvestors['investor_experience'];?>" name="experience">
+                                                            <input type="number" class="form-control" id="recipient-experience" value="<?php echo $rowSelectInvestors['investor_experience']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_experience']; ?>" name="experience">
 
                                                         </div>
 
@@ -751,7 +767,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                         <div class="mb-3">
                                                             <label for="recipient-startups_invested" class="col-form-label">Startup Invested In
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-startups_invested" value="<?php echo $rowSelectInvestors['investor_startup_count'];?>" placeholder="<?php echo $rowSelectInvestors['investor_startup_count'];?>" name="startup_invested_in">
+                                                            <input type="number" class="form-control" id="recipient-startups_invested" value="<?php echo $rowSelectInvestors['investor_startup_count']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_startup_count']; ?>" name="startup_invested_in">
 
                                                         </div>
 
@@ -759,13 +775,13 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                         <div class="mb-3">
                                                             <label for="recipient-amount_invested" class="col-form-label">Total Amount Invested
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-amount_invested" value="<?php echo $rowSelectInvestors['investor_amount_invested'];?>" placeholder="<?php echo $rowSelectInvestors['investor_amount_invested'];?>" name="total_amount_invested">
+                                                            <input type="number" class="form-control" id="recipient-amount_invested" value="<?php echo $rowSelectInvestors['investor_amount_invested']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_amount_invested']; ?>" name="total_amount_invested">
 
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="recipient-connections" class="col-form-label">Connections
                                                                 :</label>
-                                                            <input type="number" class="form-control" id="recipient-connections" value="<?php echo $rowSelectInvestors['investor_connections'];?>" placeholder="<?php echo $rowSelectInvestors['investor_connections'];?>" name="connections">
+                                                            <input type="number" class="form-control" id="recipient-connections" value="<?php echo $rowSelectInvestors['investor_connections']; ?>" placeholder="<?php echo $rowSelectInvestors['investor_connections']; ?>" name="connections">
 
                                                         </div>
                                                         <div class="modal-footer">
