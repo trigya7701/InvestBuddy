@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal1'])) {
     $net_profit = $_POST['net_profit'];
     $company_size = $_POST['company_size'];
     $recent_funding = $_POST['recent_funding'];
-    $domain=$_POST['domain'];
+    $domain = $_POST['domain'];
 
 
 
@@ -333,7 +333,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal6']) && isse
 
         //throw $th;
         mysqli_rollback($conn);
-      //  echo $th;
+        //  echo $th;
         echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
@@ -393,7 +393,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal7']) && isse
     $document_error = $_FILES['document']['error'];
 
 
-  //  echo $document_name;
+    //  echo $document_name;
 
 
 
@@ -442,7 +442,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal7']) && isse
 
         //throw $th;
         mysqli_rollback($conn);
-       // echo $th;
+        // echo $th;
         echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
@@ -550,7 +550,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal8']) && isse
 
         //throw $th;
         mysqli_rollback($conn);
-       // echo $th;
+        // echo $th;
         echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body">
@@ -565,7 +565,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal8']) && isse
 if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-img']))) {
 
     $profile_image_url = $_POST['profile_image'];
-   // echo $profile_image_url;
+    // echo $profile_image_url;
     mysqli_begin_transaction($conn);
     mysqli_autocommit($conn, FALSE);
 
@@ -577,7 +577,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
 
 
         $file_path =  "../profile-images/" . $profile_image_url;
-       
+
         unlink($file_path) ?: throw new Exception("Error");
         mysqli_commit($conn);
 
@@ -604,6 +604,50 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
     }
 }
 
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-modal_chart'])) {
+
+    $revenue = $_POST['revenue'];
+    $net_profit = $_POST['net_profit'];
+    $year = $_POST['year'];
+
+    mysqli_begin_transaction($conn);
+    mysqli_autocommit($conn, FALSE);
+
+
+    try {
+
+
+        $sqlInsertStartupChart = "INSERT INTO `startup_analysis`(`s_revenue`, `s_net_profit`, `s_year`, `user_id`) VALUES ('$revenue','$net_profit','$year','$user_id')";
+
+
+        $resultInsertStartupChart = mysqli_query($conn, $sqlInsertStartupChart) ?: throw new Exception(mysqli_error($conn));
+
+        mysqli_commit($conn);
+
+        echo '<div class="toast show align-items-center text-white bg-info border-0 mt-2 mx-2" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+            <div class="toast-body">
+          Details Updated !!
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>';
+    } catch (\Throwable $th) {
+        //throw $th;
+
+        mysqli_rollback($conn);
+        //echo $th;
+        echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                      <div class="toast-body">
+                       Something went wrong !! Please try again.
+                      </div>
+                      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                  </div>';
+    }
+}
 ?>
 
 
@@ -638,62 +682,62 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                 <div class="mb-3">
                                                     <label for="recipient-website" class="col-form-label">Website
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-website" value="<?php echo $rowSelectStartup['startup_website'];?>" placeholder="<?php echo $rowSelectStartup['startup_website'];?>" name="website">
+                                                    <input type="text" class="form-control" id="recipient-website" value="<?php echo $rowSelectStartup['startup_website']; ?>" placeholder="<?php echo $rowSelectStartup['startup_website']; ?>" name="website">
 
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="recipient-name" class="col-form-label">Linked In
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-name"  value="<?php echo $rowSelectStartup['startup_linkedin'];?>" placeholder="<?php echo $rowSelectStartup['startup_linkedin'];?>" name="linkedin">
+                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectStartup['startup_linkedin']; ?>" placeholder="<?php echo $rowSelectStartup['startup_linkedin']; ?>" name="linkedin">
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-twiiter" class="col-form-label">Twitter :
                                                     </label>
-                                                    <input type="text" class="form-control" id="recipient-twitter"    value="<?php echo $rowSelectStartup['startup_twitter'];?>" placeholder="<?php echo $rowSelectStartup['startup_twitter'];?>" name="twitter">
+                                                    <input type="text" class="form-control" id="recipient-twitter" value="<?php echo $rowSelectStartup['startup_twitter']; ?>" placeholder="<?php echo $rowSelectStartup['startup_twitter']; ?>" name="twitter">
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-instagram" class="col-form-label">Instagram
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-instagram"  value="<?php echo $rowSelectStartup['startup_instagram'];?>" placeholder="<?php echo $rowSelectStartup['startup_instagram'];?>" name="instagram">
+                                                    <input type="text" class="form-control" id="recipient-instagram" value="<?php echo $rowSelectStartup['startup_instagram']; ?>" placeholder="<?php echo $rowSelectStartup['startup_instagram']; ?>" name="instagram">
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-facebook" class="col-form-label">Facebook
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-facebook"  value="<?php echo $rowSelectStartup['startup_facebook'];?>" placeholder="<?php echo $rowSelectStartup['startup_facebook'];?>" name="facebook">
+                                                    <input type="text" class="form-control" id="recipient-facebook" value="<?php echo $rowSelectStartup['startup_facebook']; ?>" placeholder="<?php echo $rowSelectStartup['startup_facebook']; ?>" name="facebook">
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-founder" class="col-form-label">Founder
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-founder"  value="<?php echo $rowSelectStartup['startup_founder'];?>" placeholder="<?php echo $rowSelectStartup['startup_founder'];?>" name="founder">
+                                                    <input type="text" class="form-control" id="recipient-founder" value="<?php echo $rowSelectStartup['startup_founder']; ?>" placeholder="<?php echo $rowSelectStartup['startup_founder']; ?>" name="founder">
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-founded_in" class="col-form-label">Founded In
                                                         :</label>
-                                                    <input type="number" class="form-control" id="recipient-founded_in"  value="<?php echo $rowSelectStartup['startup_founded_in'];?>" placeholder="<?php echo $rowSelectStartup['startup_founded_in'];?>" name="founded_in">
+                                                    <input type="number" class="form-control" id="recipient-founded_in" value="<?php echo $rowSelectStartup['startup_founded_in']; ?>" placeholder="<?php echo $rowSelectStartup['startup_founded_in']; ?>" name="founded_in">
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-revenue" class="col-form-label">Revenue
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-revenue"  value="<?php echo $rowSelectStartup['startup_revenue'];?>" placeholder="<?php echo $rowSelectStartup['startup_revenue'];?>" name="revenue">
+                                                    <input type="text" class="form-control" id="recipient-revenue" value="<?php echo $rowSelectStartup['startup_revenue']; ?>" placeholder="<?php echo $rowSelectStartup['startup_revenue']; ?>" name="revenue">
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-net_profit" class="col-form-label">Net Profit
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-net_profit"  value="<?php echo $rowSelectStartup['startup_net_profit'];?>" placeholder="<?php echo $rowSelectStartup['startup_net_profit'];?>" name="net_profit">
+                                                    <input type="text" class="form-control" id="recipient-net_profit" value="<?php echo $rowSelectStartup['startup_net_profit']; ?>" placeholder="<?php echo $rowSelectStartup['startup_net_profit']; ?>" name="net_profit">
 
                                                 </div>
 
@@ -701,7 +745,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                     <label for="recipient-company_size" class="col-form-label">Company
                                                         Size
                                                         :</label>
-                                                    <input type="number" class="form-control" id="recipient-company_size"  value="<?php echo $rowSelectStartup['startup_size'];?>" placeholder="<?php echo $rowSelectStartup['startup_size'];?>" name="company_size">
+                                                    <input type="number" class="form-control" id="recipient-company_size" value="<?php echo $rowSelectStartup['startup_size']; ?>" placeholder="<?php echo $rowSelectStartup['startup_size']; ?>" name="company_size">
 
                                                 </div>
 
@@ -709,15 +753,15 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                     <label for="recipient-recent_funding" class="col-form-label">Recent
                                                         Funding
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-recent_funding"  value="<?php echo $rowSelectStartup['startup_recent_funding'];?>" placeholder="<?php echo $rowSelectStartup['startup_recent_funding'];?>" name="recent_funding">
+                                                    <input type="text" class="form-control" id="recipient-recent_funding" value="<?php echo $rowSelectStartup['startup_recent_funding']; ?>" placeholder="<?php echo $rowSelectStartup['startup_recent_funding']; ?>" name="recent_funding">
 
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <label for="recipient-domain" class="col-form-label">Domain 
-                                                       
+                                                    <label for="recipient-domain" class="col-form-label">Domain
+
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-domain"  value="<?php echo $rowSelectStartup['startup_domain'];?>" placeholder="<?php echo $rowSelectStartup['startup_domain'];?>" name="domain">
+                                                    <input type="text" class="form-control" id="recipient-domain" value="<?php echo $rowSelectStartup['startup_domain']; ?>" placeholder="<?php echo $rowSelectStartup['startup_domain']; ?>" name="domain">
 
                                                 </div>
 
@@ -756,10 +800,10 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                 </p>
                                 <form action="" method="POST">
                                     <div class="d-grid gap-2 d-md-block">
-                                        <button type="button" class="btn btn-outline-info btn-sm " data-bs-toggle="modal" data-bs-target="#exampleModal8" data-bs-whatever="@mdo"> Edit Profile  <i class="fa-solid fa-pencil"></i></button>
+                                        <button type="button" class="btn btn-outline-info btn-sm " data-bs-toggle="modal" data-bs-target="#exampleModal8" data-bs-whatever="@mdo"> Edit Profile <i class="fa-solid fa-pencil"></i></button>
 
                                         <input class="form-control form-control-sm" type="hidden" value="<?php echo $rowSelectStartup['startup_logo']; ?>" name="profile_image" placeholder=".form-control-sm" aria-label=".form-control-sm example">
-                                        <button type="submit" class="btn btn-info btn-sm" name="btn-delete-profile-img">Delete Profile <i class="fa-solid fa-trash-can mx-1"></i></button>
+                                        <button type="submit" class="btn btn-info btn-sm" name="btn-delete-profile-img">Delete Profile Pic <i class="fa-solid fa-trash-can mx-1"></i></button>
 
 
 
@@ -872,7 +916,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0"><span class="m-1"><i class="fa-solid fa-briefcase"></i></span>Domain
-                               </h6>
+                            </h6>
                             <span class="text-secondary"><?php echo empty($rowSelectStartup['startup_domain']) ? 'Not Linked' : $rowSelectStartup['startup_domain']; ?></span>
                         </li>
 
@@ -899,7 +943,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                 <div class="mb-3">
                                                     <label for="recipient-name" class="col-form-label">Company Name
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectStartup['startup_name'];?>" placeholder="<?php echo $rowSelectStartup['startup_name'];?>" name="company_name" required>
+                                                    <input type="text" class="form-control" id="recipient-name" value="<?php echo $rowSelectStartup['startup_name']; ?>" placeholder="<?php echo $rowSelectStartup['startup_name']; ?>" name="company_name" required>
 
                                                 </div>
 
@@ -908,19 +952,19 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                 <div class="mb-3">
                                                     <label for="recipient-phone" class="col-form-label">Phone
                                                         :</label>
-                                                    <input type="number" class="form-control" id="recipient-phone"  value="<?php echo $rowSelectStartup['startup_phone'];?>" placeholder="<?php echo $rowSelectStartup['startup_phone'];?>" name="phone" required>
+                                                    <input type="number" class="form-control" id="recipient-phone" value="<?php echo $rowSelectStartup['startup_phone']; ?>" placeholder="<?php echo $rowSelectStartup['startup_phone']; ?>" name="phone" required>
 
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="message-text" class="col-form-label">Address :</label>
-                                                    <textarea class="form-control" id="message-text" value="<?php echo $rowSelectStartup['startup_address'];?>" placeholder="<?php echo $rowSelectStartup['startup_address'];?>" name="address" required></textarea>
+                                                    <textarea class="form-control" id="message-text" value="<?php echo $rowSelectStartup['startup_address']; ?>" placeholder="<?php echo $rowSelectStartup['startup_address']; ?>" name="address" required></textarea>
                                                 </div>
 
                                                 <div class="mb-3">
                                                     <label for="recipient-valuation" class="col-form-label">Valuation
                                                         :</label>
-                                                    <input type="text" class="form-control" id="recipient-valuation" value="<?php echo $rowSelectStartup['startup_valuation'];?>" placeholder="<?php echo $rowSelectStartup['startup_valuation'];?>" name="valuation" required>
+                                                    <input type="text" class="form-control" id="recipient-valuation" value="<?php echo $rowSelectStartup['startup_valuation']; ?>" placeholder="<?php echo $rowSelectStartup['startup_valuation']; ?>" name="valuation" required>
 
                                                 </div>
 
@@ -1019,7 +1063,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                                             <div class="mb-3">
                                                                 <label for="message-text" class="col-form-label">About
                                                                     :</label>
-                                                                <textarea class="form-control" id="message-text"  name="about"></textarea>
+                                                                <textarea class="form-control" id="message-text" name="about"></textarea>
                                                             </div>
 
 
@@ -1064,7 +1108,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
 
                                                             <div class="mb-3">
                                                                 <label for="message-history" class="col-form-label">History :</label>
-                                                                <textarea class="form-control" id="message-history"  name="history"></textarea>
+                                                                <textarea class="form-control" id="message-history" name="history"></textarea>
                                                             </div>
 
 
@@ -1109,7 +1153,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
 
                                                             <div class="mb-3">
                                                                 <label for="message-problem_solution" class="col-form-label">Problem & Solution :</label>
-                                                                <textarea class="form-control" id="message-problem_solution"  name="problem_solution"></textarea>
+                                                                <textarea class="form-control" id="message-problem_solution" name="problem_solution"></textarea>
                                                             </div>
 
 
@@ -1317,6 +1361,133 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="panelsStayOpen-headingSix">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
+                                    Company Performance
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSix">
+
+                                <div class="row accordion-body ">
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button type="button" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal_chart" data-bs-whatever="@fat"><i class="fa-solid fa-pencil"></i></button>
+
+                                        <div class="modal fade" id="exampleModal_chart" tabindex="-1" aria-labelledby="exampleModalLabel_chart" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Add Information</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="" method="POST">
+
+                                                            <div class="row mb-3">
+                                                                <label for="year" class="col-sm-2 col-form-label">Year</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number" class="form-control" id="year" placeholder="eg. 2020" name="year" required>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="row mb-3">
+                                                                <label for="revenue" class="col-sm-2 col-form-label">Revenue</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="number" class="form-control" id="revenue" placeholder="eg. 1200000" name="revenue" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row mb-3">
+                                                                <label for="profit" class="col-sm-2 col-form-label">Profit</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="pasnumber" class="form-control" id="profit" placeholder="eg. 1200000" name="net_profit" required>
+                                                                </div>
+                                                            </div>
+
+
+
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary" name="btn-modal_chart">Update</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <?php
+
+                                    mysqli_begin_transaction($conn);
+                                    mysqli_autocommit($conn, FALSE);
+                                    $chart_data = '';
+                                    $chartDataPresent=true;
+
+                                    try {
+
+                                        $sqlSelectChart = "SELECT * FROM `startup_analysis` WHERE user_id='$user_id'";
+                                        $resultSelectChart = mysqli_query($conn, $sqlSelectChart) ?: throw new Exception(mysqli_error($conn));
+
+                                        $numSelectChart = mysqli_num_rows($resultSelectChart);
+
+                                        if ($numSelectChart != 0) {
+                                            echo '<table class="table table-striped table-light table-bordered table-hover mt-2">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Year</th>
+                                                <th scope="col">Revenue (in INR)</th>
+                                                <th scope="col">Profit (in INR)</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>';
+                                            $count=1;
+                                            while ($rowSelectChart = mysqli_fetch_assoc($resultSelectChart)) {
+                                                $chart_data .= "{ year:'" . $rowSelectChart["s_year"] . "', profit:" . $rowSelectChart["s_net_profit"] . ",  revenue:" . $rowSelectChart["s_revenue"] . "}, ";
+                                                echo ' <tr>
+                                                <th scope="row">'.$count.'</th>
+                                                <td>'.$rowSelectChart["s_year"] .'</td>
+                                                <td>'.$rowSelectChart["s_revenue"].'</td>
+                                                <td>'.$rowSelectChart["s_net_profit"].'</td>
+                                              </tr>';
+                                              $count++;
+                                            }
+                                            echo '  </tbody>
+                                            </table>';
+                                            $chart_data = substr($chart_data, 0, -2);
+                                        }
+                                        else{
+                                            echo 'No Information Available Currently ';
+                                            $chartDataPresent=false;
+                                        }
+                                    } catch (\Throwable $th) {
+                                        //throw $th;
+                                        echo $th;
+                                    }
+                                    // echo $chart_data;
+
+
+
+                                    ?>
+                                    
+
+                                </div>
+
+                                
+
+
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
@@ -1325,4 +1496,24 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
         </div>
 
     </div>
+    <?php
+
+       if($chartDataPresent){
+           echo '<h3 class="text-center text-uppercase">Performance Analysis</h3>
+           <div class="row">
+               
+               <div class="col-lg-6 col-sm-12">
+               <div class="shadow p-3 mb-5 bg-light rounded"><div id="chart" ></div> </div>                    
+               </div>
+               <div class="col-lg-6 col-sm-12">
+               <div class="shadow p-3 mb-5 bg-light rounded"> <div id="chart_bar" ></div> </div>                        
+               </div>
+           </div>';
+       }
+
+
+    ?>
+
+    
+    
 </div>

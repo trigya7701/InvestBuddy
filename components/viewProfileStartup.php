@@ -4,6 +4,8 @@ mysqli_begin_transaction($conn);
 mysqli_autocommit($conn, FALSE);
 
 $email_id = $_GET['query'];
+
+
 try {
     $transaction = true;
 
@@ -37,26 +39,25 @@ try {
 <?php
 
 
-    if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['send'])){
-        //echo 'send';
-        $message=$_POST['message'];
-        $chatId=$_POST['chat_id'];
-        $email=$_SESSION['user_email'];
-        //echo $message;
-       // echo $chatId;
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['send'])) {
+    //echo 'send';
+    $message = $_POST['message'];
+    $chatId = $_POST['chat_id'];
+    $email = $_SESSION['user_email'];
+    //echo $message;
+    // echo $chatId;
 
-        mysqli_begin_transaction($conn);
-        try {
+    mysqli_begin_transaction($conn);
+    try {
 
-            $sqlInsertPosts="INSERT INTO `posts`(`post_message`,  `user_email`, `chat_id`) 
+        $sqlInsertPosts = "INSERT INTO `posts`(`post_message`,  `user_email`, `chat_id`) 
                             VALUES ('$message','$email','$chatId')";
-            $sqlInsertPosts=mysqli_query($conn,$sqlInsertPosts)?:throw new Exception(mysqli_error($conn));
-            mysqli_commit($conn);
-           
-        } catch (\Throwable $th) {
-            //throw $th;
-            mysqli_rollback($conn);
-            echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        $sqlInsertPosts = mysqli_query($conn, $sqlInsertPosts) ?: throw new Exception(mysqli_error($conn));
+        mysqli_commit($conn);
+    } catch (\Throwable $th) {
+        //throw $th;
+        mysqli_rollback($conn);
+        echo '<div class="toast show align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
               <div class="toast-body">
                Something went wrong !! Please try again.
@@ -64,8 +65,8 @@ try {
               <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
           </div>';
-        }
     }
+}
 ?>
 
 
@@ -149,7 +150,7 @@ try {
                                                 <div class="modal-body">
                                                  ';
                                     if ($chatExists) {
-                                        
+
 
                                         mysqli_begin_transaction($conn);
                                         try {
@@ -165,22 +166,20 @@ try {
                                                             </div>
                                                           </div>';
                                             } else {
-                                               
-                                                while ($rowSelectPosts = mysqli_fetch_assoc($resultSelectPosts)) {
-                                           
 
-                                                echo '
+                                                while ($rowSelectPosts = mysqli_fetch_assoc($resultSelectPosts)) {
+
+
+                                                    echo '
                                                 <div class="card card-stats mx-4 my-2 ">
                                                     <div class="card-body   ">
-                                                        <p class="text-start m-0 p-0"><strong>'.$rowSelectPosts['user_email'].'</strong></p>
-                                                        <p class="text-start m-0 p-0">'.$rowSelectPosts['post_message'].'</p>
-                                                        <p class="text-end m-0 p-0"><small>'.$rowSelectPosts['post_time'].'</small></p>
+                                                        <p class="text-start m-0 p-0"><strong>' . $rowSelectPosts['user_email'] . '</strong></p>
+                                                        <p class="text-start m-0 p-0">' . $rowSelectPosts['post_message'] . '</p>
+                                                        <p class="text-end m-0 p-0"><small>' . $rowSelectPosts['post_time'] . '</small></p>
                             
                                                     </div>
                                                 </div>';
-
                                                 }
-                                               
                                             }
                                         } catch (\Throwable $th) {
                                             //throw $th;
@@ -201,10 +200,9 @@ try {
                                             $sqlSelectChats2 = "SELECT * FROM `chats` WHERE chat_name='$chat_name'";
                                             $resultSelectChats2 = mysqli_query($conn, $sqlSelectChats2) ?: throw new Exception(mysqli_error($conn));
 
-                                            while($rowSelectChats2=mysqli_fetch_assoc($resultSelectChats2)){
-                                                $chat_id=$rowSelectChats2['chat_id'];
+                                            while ($rowSelectChats2 = mysqli_fetch_assoc($resultSelectChats2)) {
+                                                $chat_id = $rowSelectChats2['chat_id'];
                                             }
-
                                         } catch (\Throwable $th) {
                                             //throw $th;
                                             mysqli_rollback($conn);
@@ -219,7 +217,7 @@ try {
                                                   
                                                     <div class="input-group mb-3">
 
-                                                    <input type="hidden"  name="chat_id" value="'.$chat_id.'">
+                                                    <input type="hidden"  name="chat_id" value="' . $chat_id . '">
                                                         <input type="text" class="form-control" placeholder="Send Message" name="message" aria-label="Recipients username" aria-describedby="button-addon2">
                                                         <button class="btn btn-primary" type="submit"   name="send" id="button-addon2" >Send</button>
                                                        
@@ -303,7 +301,7 @@ try {
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                             <h6 class="mb-0"><span class="m-1"><i class="fa-solid fa-briefcase"></i></span>Domain
-                           </h6>
+                            </h6>
                             <span class="text-secondary"><?php echo empty($rowSelectStartup['startup_domain']) ? 'Not Linked' : $rowSelectStartup['startup_domain']; ?></span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
@@ -527,8 +525,8 @@ try {
 
 
             
-            </div>
-        </div>';
+                                            </div>
+                                        </div>';
                                             }
                                             echo '</div>';
                                         }
@@ -544,6 +542,91 @@ try {
                                 </div>
                             </div>
                         </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="panelsStayOpen-headingSix">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseSix" aria-expanded="false" aria-controls="panelsStayOpen-collapseSix">
+                                    Company Performance
+                                </button>
+                            </h2>
+                            <div id="panelsStayOpen-collapseSix" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingSix">
+
+                                <div class="row accordion-body ">
+                                  
+
+
+
+                                    <?php
+
+                                    mysqli_begin_transaction($conn);
+                                    mysqli_autocommit($conn, FALSE);
+                                    $chart_data = '';
+                                    $user_id;
+                                    $chartDataPresent=true;
+                                    try {
+
+                                        $sqlSelectUsers="SELECT * FROM `users` WHERE user_email='$email_id'";
+                                        $resultSelectUsers=mysqli_query($conn, $sqlSelectUsers)?: throw new Exception(mysqli_error($conn));
+
+                                        $rowSelectUser=mysqli_fetch_assoc($resultSelectUsers);
+                                        $user_id=$rowSelectUser['user_id'];
+
+                                        $sqlSelectChart = "SELECT * FROM `startup_analysis` WHERE user_id='$user_id'";
+                                        $resultSelectChart = mysqli_query($conn, $sqlSelectChart) ?: throw new Exception(mysqli_error($conn));
+
+                                        $numSelectChart = mysqli_num_rows($resultSelectChart);
+
+                                        if ($numSelectChart != 0) {
+                                            echo '<table class="table table-striped table-light table-bordered table-hover mt-2">
+                                            <thead>
+                                              <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Year</th>
+                                                <th scope="col">Revenue (in INR)</th>
+                                                <th scope="col">Profit (in INR)</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>';
+                                            $count=1;
+                                            while ($rowSelectChart = mysqli_fetch_assoc($resultSelectChart)) {
+                                                $chart_data .= "{ year:'" . $rowSelectChart["s_year"] . "', profit:" . $rowSelectChart["s_net_profit"] . ",  revenue:" . $rowSelectChart["s_revenue"] . "}, ";
+                                                echo ' <tr>
+                                                <th scope="row">'.$count.'</th>
+                                                <td>'.$rowSelectChart["s_year"] .'</td>
+                                                <td>'.$rowSelectChart["s_revenue"].'</td>
+                                                <td>'.$rowSelectChart["s_net_profit"].'</td>
+                                              </tr>';
+                                              $count++;
+                                            }
+                                            echo '  </tbody>
+                                            </table>';
+                                            $chart_data = substr($chart_data, 0, -2);
+                                        }
+                                        else{
+                                            echo 'No Information Available Currently ';
+                                            $chartDataPresent=false;
+                                        }
+                                    } catch (\Throwable $th) {
+                                        //throw $th;
+                                        echo $th;
+                                    }
+                                    // echo $chart_data;
+
+
+
+                                    ?>
+                                    
+
+                                </div>
+
+                                
+
+
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
@@ -552,6 +635,24 @@ try {
         </div>
 
     </div>
+
+
+    <?php
+
+            
+           if($chartDataPresent){
+               echo ' <h3 class="text-center text-uppercase">Performance Analysis</h3>
+               <div class="row">
+                   
+                   <div class="col-lg-6 col-sm-12">
+                   <div class="shadow p-3 mb-5 bg-light rounded"><div id="chart" ></div> </div>                    
+                   </div>
+                   <div class="col-lg-6 col-sm-12">
+                   <div class="shadow p-3 mb-5 bg-light rounded"> <div id="chart_bar" ></div> </div>                        
+                   </div>
+               </div>';
+           }                         
+
+    ?>
+   
 </div>
-
-

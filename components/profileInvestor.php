@@ -455,7 +455,7 @@ if (($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['btn-delete-profile-im
                                         <button type="button" class="btn btn-outline-info btn-sm " data-bs-toggle="modal" data-bs-target="#exampleModal8" data-bs-whatever="@mdo"> Edit Profile <i class="fa-solid fa-pencil"></i></button>
 
                                         <input class="form-control form-control-sm" type="hidden" value="<?php echo $rowSelectInvestors['investor_profile']; ?>" name="profile_image" placeholder=".form-control-sm" aria-label=".form-control-sm example">
-                                        <button type="submit" class="btn btn-info btn-sm" name="btn-delete-profile-img">Delete Profile <i class="fa-solid fa-trash-can mx-1"></i></button>
+                                        <button type="submit" class="btn btn-info btn-sm" name="btn-delete-profile-img">Delete Profile Pic <i class="fa-solid fa-trash-can mx-1"></i></button>
 
 
 
