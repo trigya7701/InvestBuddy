@@ -43,7 +43,7 @@ Entrepreneurs and investors are the two sorts of users who utilize our software.
 ### Search Page
  <div float="left">
 <img src="https://github.com/trigya7701/InvestBuddy/blob/2dc2201224305bb73a6f59eaabcbc93ed88de78a/images/InvestBuddy8.png" width=480>
-<img src="https://github.com/trigya7701/InvestBuddy/blob/2dc2201224305bb73a6f59eaabcbc93ed88de78a/images/InvestBuddy9.png" width=480>
+<img src="https://github.com/trigya7701/InvestBuddy/blob/2dc2201224305bb73a6f59eaabcbc93ed88de78a/images/InvestBuddy10.png" width=480>
   </div>
   <br>
   <br>
